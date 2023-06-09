@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with 日晷</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 100%;
+            height: 80vh;
+            overflow: auto;
+            padding: 10px;
+        }
+        .message {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+        }
+        .message img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .message .text {
+            margin-left: 10px;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user-message {
+            justify-content: flex-end;
+        }
+        .user-message .text {
+            background-color: #4caf50;
+            color: white;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px;
+        }
+        .button-container button {
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .message img {
+                width: 30px;
+                height: 30px;
+            }
+            .message .text {
+                font-size: 14px;
+                padding: 8px;
+            }
+            .button-container button {
+                font-size: 14px;
+                padding: 8px;
+            }
+        }
+
+        @media (max-height: 480px) {
+            .chat-container {
+                height: 60vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container" id="chatContainer">
+    </div>
+    <div class="button-container">
+        <button onclick="sendMessage(1)">咦？哪里来的石头？</button>
+        <button onclick="sendMessage(2)">您怎么告诉人们时间的呢？</button>
+        <button onclick="sendMessage(3)">您为什么总是歪着头呢？好奇怪|๑°ｪ°๑)ﾉ</button>
+        <button onclick="sendMessage(4)">那您的生活待遇一定非常好吧？（至少比我好）</button>
+        <button onclick="sendMessage(5)">一块大石头，哪里来的本领保护皇位的？</button>
+        <button onclick="sendMessage(6)">您真的在世上活了4700年了？不信</button>
+        <button onclick="sendMessage(7)">您和孙猴子一样厉害，哪您的“紧箍咒”是什么？</button>
+    </div>
+    <script>
+        const chatContainer = document.getElementById('chatContainer');
+        const answers = [
+            '您好！我叫日晷，我是中国人在天文学上的重要发明呦。我可以悄悄地告诉您，我最少4700岁了。我可是中国历朝历代皇帝的“宝贝”呀，因为我可以告诉人们时间。',
+            'emmmmm这个问题吗，既复杂，又简单。这要从我的名字日晷说起。日，就是太阳。晷就是日影。合在一起就是“太阳的影子”。对了，人们是依据太阳照在我身体上的影子来计时的。(๑•̑з•̑๑）我的身体小名叫表。对！钟表的表。我的大名叫晷针！记录我我身体投影的叫表座，大名叫晷面，它们上面有许多刻度，就是中国古人的12个具体时间了。他们是十二属相里的子、丑、寅、卯、辰、巳、午、未、申、酉、戌、亥十二时辰，每个时辰又等分为“时初”、“时正”，就是今天的 24小时啦。',
+            '不好意思呦，让您发现了我的特点。嗯，我为什么歪着头，您问的问题好专业呀。是的，我这一辈子都是仰面朝天的。因为地球的自转轴与太阳的轨道不在一个平面上，太阳轨道与地球自转轨道面的夹角为66°34′,所以我们日晷都是仰天66°34′度的。',
+            '我的生活待遇呀？我的待遇确实不高，也只是天天住在皇宫里。嘿嘿，是因为皇帝老儿们要通过我保住他们的皇帝宝座。因为我可重要了。我不仅测一天中白天的时间，而且还可以测量一年中两分（春分、秋分）、两至（夏至、冬至）的时间，还有一年中月份的时间呢。',
+            '嗯哪~太伤自尊了。(T^T)告诉您吧，我代表着“君权天授”。中国古代的皇帝都是通过我测得24节气、72物候的时间表来制定农业历法的。历法是干什么用的？指导农业生产生活呀。历法不准，皇帝怎么称“天子”，天子作为上天的儿子最重要的事情就是农业历法。因此我一直是皇宫中的“宠儿”，您看看，明清时期的北京紫禁城内的故宫中的大殿前的广场，我家！',
+            '您怀疑我的年龄呀，可以理解。世界上最古老的观象台在山西省襄汾县陶寺城遗址。距今约4700年的陶寺古观象台证实了《尚书·尧典》上所说的“历象日月星辰，敬授人时”的真实历史和人类社会的现实。它就是我的实物例证。',
+            '我的“紧箍咒”就是我的缺点，显而易见的是阴天或晚上等没有阳光的时候。我就不能工作。'
+        ];
+
+        function sendMessage(questionIndex) {
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('message', 'user-message');
+            userMessage.innerHTML = `
+                <img src="user.png" alt="User">
+                <div class="text">${document.querySelector(`button[onclick="sendMessage(${questionIndex})"]`).textContent}</div>
+            `;
+            chatContainer.appendChild(userMessage);
+
+            const robotMessage = document.createElement('div');
+            robotMessage.classList.add('message', 'robot-message');
+            robotMessage.innerHTML = `
+                <img src="robot.png" alt="Robot">
+                <div class="text">${answers[questionIndex - 1]}</div>
+            `;
+            chatContainer.appendChild(robotMessage);
+
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    </script>
+</body>
+</html>
